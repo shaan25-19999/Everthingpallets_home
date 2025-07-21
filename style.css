@@ -73,7 +73,6 @@ main {
   min-width: 200px;
   margin: 1rem;
 }
-
 /* GRAPH SECTION */
 .graph-container {
   display: flex;
@@ -129,4 +128,19 @@ footer {
   padding: 2rem 1rem;
   font-size: 0.9rem;
   border-top: 1px solid #D3E3EC;
+}
+
+/* ✅ LOGO IMAGE SUPPORT */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+.logo-container img {
+  width: 220px;
+  max-width: 90%;
+  height: auto;
+  object-fit: contain;
 }
