@@ -16,21 +16,20 @@ header {
   background: linear-gradient(to right, #1C3D5A, #66A5AD);
   color: white;
   text-align: center;
-  padding: 2rem 1rem 1.5rem; /* ⬅ tighter vertical padding */
+  padding: 2.5rem 1rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 .logo-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem; /* ⬅ reduce gap between logo, HOME, tagline */
 }
 .logo-header img {
   width: 220px;
   max-width: 90%;
   height: auto;
   object-fit: contain;
-  margin-bottom: 0.25rem; /* ⬅ smaller margin under logo */
+  margin-bottom: 0.75rem;
 }
 .logo-header p {
   font-size: 1.15rem;
