@@ -40,7 +40,7 @@ a{ color:inherit; text-decoration:none; }
 .hero-subtitle{ margin:0 auto 14px; max-width:720px; color: rgba(255,255,255,.95); }
 .hero-cta{ display:flex; gap:12px; justify-content:center; margin-top:10px; }
 
-/* Buttons (shared with rest) */
+/* Buttons */
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
   height:44px; padding:0 16px; border-radius:12px;
@@ -91,16 +91,28 @@ main{ width:min(1100px,92%); margin-inline:auto; padding:26px 0 40px; }
 .price-value{ font-weight:900; font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing:.2px; }
 .price-value .unit{ color:var(--muted); font-weight:700; font-size:.95rem; margin-left:6px; }
 
-/* ============ CHARTS ============ */
-.graph-container{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:16px; }
+/* ============ CHARTS (FIXED HEIGHT) ============ */
+.graph-container{
+  display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:16px;
+}
 .chart-box{
   background:#fff; border:1px solid var(--line); border-radius: var(--radius);
   padding:14px; box-shadow: var(--shadow-sm);
+  max-width: 520px;        /* keep boxes tidy */
+  margin-inline: auto;     /* center in column */
 }
 .chart-box h3{ margin:0 0 6px; }
-canvas{
-  background:#fff; border:1px solid var(--line); border-radius: 12px; padding: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+
+/* ⬇️ Hard-cap canvas height so charts never get huge */
+.chart-box canvas{
+  display:block;
+  width:100% !important;
+  height:240px !important;          /* default height */
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
 }
 
 /* ============ INSIGHTS ============ */
@@ -151,8 +163,11 @@ footer{
 @media (max-width: 980px){
   .graph-container{ grid-template-columns: 1fr; }
   .insights{ grid-template-columns: 1fr; }
+  .chart-box canvas{ height:220px !important; }  /* slightly smaller on tablets */
 }
 @media (max-width: 620px){
   .price-section{ grid-template-columns: 1fr; }
   .hero-title{ font-size: clamp(1.5rem,4.2vw,1.9rem); }
+  .chart-box{ max-width: 100%; }
+  .chart-box canvas{ height:200px !important; }  /* compact on phones */
 }
