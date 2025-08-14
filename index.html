@@ -3,76 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EverythingPallets</title>
+  <title>EverythingPallets — Home</title>
+
+  <!-- Charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style/home.css">
 </head>
 <body>
 
-  <!-- ✅ UPDATED HEADER WITH PROPER TITLING -->
+  <!-- HERO -->
   <header class="site-header">
-    <div class="logo-header">
-      <img src="logo.png" alt="EverythingPallets Logo" class="site-logo" />
-      <h1 class="home-title">HOME</h1>
-      <p class="site-tagline">For your every biomass and green energy need</p>
+    <div class="hero">
+      <img src="assets/Logo.png" alt="EverythingPallets Logo" class="hero-logo" />
+      <h1 class="hero-title">India’s Most Trusted Biomass Price Dashboard</h1>
+      <p class="hero-subtitle">Live rates, market insights, and quality assurance — all in one place.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="#live-prices">Check Today’s Prices</a>
+        <a class="btn ghost" href="market.html">Open Market Page</a>
+      </div>
     </div>
   </header>
 
-  <!-- ✅ CLEAN & REORDERED NAVIGATION -->
+  <!-- NAV -->
   <nav>
     <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">Market Prices</a>
-      <a href="#">News</a>
-      <a href="#">Contact</a>
+      <a href="index.html">Home</a>
+      <a href="market.html">Market Prices</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact</a>
     </div>
   </nav>
 
   <main>
-    <h2>Live Market Price Update for India</h2>
-
-    <div>
-      <label for="locationSelect"><strong>Select Location:</strong></label><br/>
-      <select id="locationSelect" onchange="updateData()">
-        <option value="average">Average</option>
-        <option value="ncr">NCR</option>
-        <option value="punjab">Punjab</option>
-        <option value="haryana">Haryana</option>
-        <option value="rajasthan">Rajasthan</option>
-      </select>
-    </div>
-
-    <div class="price-section">
-      <div class="price-box">
-        <strong>Pellet Price:</strong><br/>
-        ₹<span id="pelletPrice">7500</span>/ton
+    <!-- TRUST / STATUS -->
+    <section class="section trust" id="trust">
+      <div class="trust-badge">
+        <span class="tick">✔</span>
+        <span><strong>Verified Peltra Rates</strong></span>
+        <span class="dot">•</span>
+        <span>Last verified: <strong id="lastVerified">--</strong></span>
+        <span class="dot">•</span>
+        <span id="verifiedTicker">Refreshing market signals…</span>
       </div>
-      <div class="price-box">
-        <strong>Briquette Price:</strong><br/>
-        ₹<span id="briquettePrice">6200</span>/ton
-      </div>
-    </div>
+    </section>
 
-    <div class="graph-container">
-      <div class="chart-box">
-        <canvas id="pelletChart"></canvas>
-      </div>
-      <div class="chart-box">
-        <canvas id="briquetteChart"></canvas>
-      </div>
-    </div>
+    <!-- LIVE PRICES + CHARTS -->
+    <section class="section" id="live-prices">
+      <h2>Live Market Price Update for India</h2>
 
-    <div class="cta">
-      <h3>Contact us for fair market rates and quality supply support</h3>
-      <button onclick="alert('Callback requested')">Request Callback</button>
-    </div>
+      <div class="price-section">
+        <div class="price-box">
+          <div class="price-label">Pellet Price</div>
+          <div class="price-value">
+            ₹<span id="pelletPrice">--</span><span class="unit">/ton</span>
+          </div>
+        </div>
+        <div class="price-box">
+          <div class="price-label">Briquette Price</div>
+          <div class="price-value">
+            ₹<span id="briquettePrice">--</span><span class="unit">/ton</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="graph-container">
+        <div class="chart-box">
+          <h3>Pellet Price Trend</h3>
+          <canvas id="pelletChart"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Briquette Price Trend</h3>
+          <canvas id="briquetteChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSIGHTS -->
+    <section class="section insights">
+      <div class="insights-card">
+        <h3>Top 3 Cheapest Regions (Pellets)</h3>
+        <ul id="cheapestList" class="cheapest-list"><!-- populated by JS --></ul>
+        <p class="note">Based on current submitted/aggregated rates. Subject to lane & loading conditions.</p>
+      </div>
+
+      <div class="insights-card light">
+        <h3>Why Peltra?</h3>
+        <div class="why-grid">
+          <div class="why">
+            <div class="why-icon">📈</div>
+            <div class="why-title">Accurate Prices</div>
+            <div class="why-text">Live data, continuous refresh, and verified submissions.</div>
+          </div>
+          <div class="why">
+            <div class="why-icon">✅</div>
+            <div class="why-title">Quality First</div>
+            <div class="why-text">Focused on reliable biomass supply and stable quality.</div>
+          </div>
+          <div class="why">
+            <div class="why-icon">🌐</div>
+            <div class="why-title">Nationwide Network</div>
+            <div class="why-text">Efficient sourcing across clusters to keep costs in check.</div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
+  <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 EverythingPallets. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- MOBILE STICKY BAR -->
+  <div class="sticky-bar">
+    <a class="sticky-link" href="#live-prices">Today’s Prices</a>
+    <span class="dot">•</span>
+    <a class="sticky-link" href="market.html">Open Market Page</a>
+  </div>
 
+  <!-- Page JS -->
+  <script src="Home.js" defer></script>
 </body>
 </html>
