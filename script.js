@@ -1,5 +1,5 @@
-// Home page data + charts + insights (AVERAGE by default, no dropdown)
-const API_URL = "https://api.sheetbest.com/sheets/5ac0ae3c-c8d3-4f90-a9af-18198287e688";
+// Home page data + charts + insights (AVERAGE by default)
+const API_URL = "https://api.sheetbest.com/sheets/cab2f0a4-a638-4a03-91a0-cc5a12548c6a";
 
 let sheetData = [];
 let pelletChartInstance = null;
@@ -13,88 +13,71 @@ const toNum = (x) => {
   return isFinite(n) ? n : NaN;
 };
 
-// Fetch & boot
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const res = await fetch(API_URL);
     sheetData = await res.json();
 
-    // expose for any helper scripts (optional)
+    // Expose for debugging
     window.sheetData = sheetData;
 
-    // Stamp "last verified"
+    // ✅ Stamp "last verified"
     const lastVerifiedEl = document.getElementById("lastVerified");
     if (lastVerifiedEl) {
       const now = new Date();
-      lastVerifiedEl.textContent = now.toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+      lastVerifiedEl.textContent = now.toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
     }
 
-    // Start ticker
-    startTicker();
-
-    // Populate prices + charts for AVERAGE
+    // ✅ Populate prices + charts for AVERAGE
     renderAveragePrices();
     drawCharts("AVERAGE");
 
-    // Build Top 3 cheapest (Pellet)
+    // ✅ Build Top 3 cheapest (Pellet)
     renderTopCheapestPellet();
   } catch (e) {
     console.error("Home: fetch error", e);
   }
 });
 
-function startTicker() {
-  const ticker = document.getElementById("verifiedTicker");
-  if (!ticker) return;
-  const msgs = [
-    "Tracking cluster-level moves",
-    "Watching diesel & lane effects",
-    "Verifying submissions",
-    "Sourcing signals from multiple clusters"
-  ];
-  let i = 0;
-  ticker.textContent = msgs[i];
-  setInterval(() => { i = (i + 1) % msgs.length; ticker.textContent = msgs[i]; }, 2500);
-}
-
+// ========================
+// RENDER FUNCTIONS
+// ========================
 function renderAveragePrices() {
   const pelletEl = document.getElementById("pelletPrice");
   const briqEl = document.getElementById("briquettePrice");
 
-  // Prefer explicit AVERAGE rows; else compute weighted simple mean across states.
-  const pelletAvgRow = sheetData.find(r => (r.State || "").trim().toUpperCase() === "AVERAGE" && (r.Type || "").toLowerCase() === "pellet");
-  const briqAvgRow   = sheetData.find(r => (r.State || "").trim().toUpperCase() === "AVERAGE" && (r.Type || "").toLowerCase() === "briquette");
+  const pelletAvgRow = sheetData.find(
+    (r) => (r.State || "").trim().toUpperCase() === "AVERAGE" &&
+           (r.Type || "").toLowerCase() === "pellet"
+  );
+  const briqAvgRow = sheetData.find(
+    (r) => (r.State || "").trim().toUpperCase() === "AVERAGE" &&
+           (r.Type || "").toLowerCase() === "briquette"
+  );
 
   let pelletPrice = toNum(pelletAvgRow?.Price);
-  let briqPrice   = toNum(briqAvgRow?.Price);
-
-  if (!isFinite(pelletPrice)) {
-    const pellets = sheetData.filter(r => (r.Type || "").toLowerCase() === "pellet" && (r.State || "").trim().toUpperCase() !== "AVERAGE")
-      .map(r => toNum(r.Price)).filter(Number.isFinite);
-    pelletPrice = pellets.length ? Math.round(pellets.reduce((a,b)=>a+b,0) / pellets.length) : NaN;
-  }
-  if (!isFinite(briqPrice)) {
-    const briqs = sheetData.filter(r => (r.Type || "").toLowerCase() === "briquette" && (r.State || "").trim().toUpperCase() !== "AVERAGE")
-      .map(r => toNum(r.Price)).filter(Number.isFinite);
-    briqPrice = briqs.length ? Math.round(briqs.reduce((a,b)=>a+b,0) / briqs.length) : NaN;
-  }
+  let briqPrice = toNum(briqAvgRow?.Price);
 
   if (pelletEl) pelletEl.textContent = fmtINR(pelletPrice);
   if (briqEl) briqEl.textContent = fmtINR(briqPrice);
 }
 
-function drawCharts(location /* "AVERAGE" */) {
+function drawCharts(location) {
   const labels = ["Year", "6 Months", "Month", "Week"];
 
-  // Helper to get a row by location + type
-  const getRow = (type) => sheetData.find(r =>
-    (r.State || "").trim().toUpperCase() === String(location).toUpperCase() &&
-    (r.Type || "").trim().toLowerCase() === type
-  );
+  const getRow = (type) =>
+    sheetData.find(
+      (r) =>
+        (r.State || "").trim().toUpperCase() === String(location).toUpperCase() &&
+        (r.Type || "").trim().toLowerCase() === type
+    );
 
-  // Prefer explicit AVERAGE rows; fallback: median of states for each bucket
   const pelletRow = getRow("pellet");
-  const briqRow   = getRow("briquette");
+  const briqRow = getRow("briquette");
 
   const extractSeries = (row, type) => {
     if (row) {
@@ -102,96 +85,62 @@ function drawCharts(location /* "AVERAGE" */) {
         toNum(row.Year),
         toNum(row["6 Month"]) || toNum(row["6 Months"]) || toNum(row["6mo"]),
         toNum(row.Month),
-        toNum(row.Week)
-      ].map(v => (isFinite(v) ? v : 0));
+        toNum(row.Week),
+      ].map((v) => (isFinite(v) ? v : 0));
     }
-    // fallback across states if AVERAGE row missing
-    const rows = sheetData.filter(r => (r.Type || "").trim().toLowerCase() === type && (r.State || "").trim().toUpperCase() !== "AVERAGE");
-    const pick = (keyList) => {
-      const vals = rows.map(r => {
-        for (const k of keyList) {
-          const v = toNum(r[k]);
-          if (isFinite(v)) return v;
-        }
-        return NaN;
-      }).filter(Number.isFinite);
-      if (!vals.length) return 0;
-      vals.sort((a,b)=>a-b);
-      return vals[Math.floor(vals.length/2)]; // median
-    };
-    return [
-      pick(["Year"]),
-      pick(["6 Month","6 Months","6mo"]),
-      pick(["Month"]),
-      pick(["Week"])
-    ];
+    return [0, 0, 0, 0];
   };
 
   const pelletValues = extractSeries(pelletRow, "pellet");
-  const briqValues   = extractSeries(briqRow, "briquette");
+  const briqValues = extractSeries(briqRow, "briquette");
 
-  // Destroy old
   if (pelletChartInstance) pelletChartInstance.destroy();
   if (briquetteChartInstance) briquetteChartInstance.destroy();
 
-  const bounds = (arr) => {
-    const finite = arr.filter(Number.isFinite);
-    if (!finite.length) return { min: 0, max: 100 };
-    const min = Math.min(...finite), max = Math.max(...finite);
-    return { min: Math.floor(min * 0.95), max: Math.ceil(max * 1.05) };
-  };
-  const pb = bounds(pelletValues), bb = bounds(briqValues);
-
-  const baseOptions = (suggestedMin, suggestedMax) => ({
+  const baseOptions = (label, data, borderColor, bgColor) => ({
     type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label,
+          data,
+          borderColor,
+          backgroundColor: bgColor,
+          tension: 0.3,
+          borderWidth: 2,
+          pointRadius: 4,
+        },
+      ],
+    },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      elements: { line: { tension: 0.3, borderWidth: 2 }, point: { radius: 4 } },
-      scales: {
-        y: {
-          suggestedMin, suggestedMax,
-          ticks: { callback: v => `₹${Number(v).toLocaleString("en-IN")}` },
-          grid: { color: "rgba(28,61,90,0.08)" }
-        },
-        x: { grid: { color: "rgba(28,61,90,0.06)" } }
-      },
       plugins: {
         legend: { display: false },
         tooltip: {
-          callbacks: { label: ctx => `₹${ctx.parsed.y.toLocaleString("en-IN")}/ton` }
-        }
-      }
-    }
+          callbacks: {
+            label: (ctx) => `₹${ctx.parsed.y.toLocaleString("en-IN")}/ton`,
+          },
+        },
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: (v) => `₹${Number(v).toLocaleString("en-IN")}`,
+          },
+        },
+      },
+    },
   });
 
-  pelletChartInstance = new Chart(document.getElementById("pelletChart"), {
-    ...baseOptions(pb.min, pb.max),
-    data: {
-      labels,
-      datasets: [{
-        label: "Pellet Price",
-        data: pelletValues,
-        borderColor: "#1C3D5A",
-        backgroundColor: "rgba(29,61,89,0.12)",
-        fill: false
-      }]
-    }
-  });
+  pelletChartInstance = new Chart(document.getElementById("pelletChart"), 
+    baseOptions("Pellet Price", pelletValues, "#1C3D5A", "rgba(29,61,89,0.12)")
+  );
 
-  briquetteChartInstance = new Chart(document.getElementById("briquetteChart"), {
-    ...baseOptions(bb.min, bb.max),
-    data: {
-      labels,
-      datasets: [{
-        label: "Briquette Price",
-        data: briqValues,
-        borderColor: "#FFA500",
-        backgroundColor: "rgba(255,165,0,0.12)",
-        fill: false
-      }]
-    }
-  });
+  briquetteChartInstance = new Chart(document.getElementById("briquetteChart"), 
+    baseOptions("Briquette Price", briqValues, "#FFA500", "rgba(255,165,0,0.12)")
+  );
 }
 
 function renderTopCheapestPellet() {
@@ -199,13 +148,13 @@ function renderTopCheapestPellet() {
   if (!ul) return;
 
   const pellets = sheetData
-    .filter(r => (r.Type || "").toLowerCase().trim() === "pellet")
-    .map(r => {
+    .filter((r) => (r.Type || "").toLowerCase().trim() === "pellet")
+    .map((r) => {
       const state = (r.State || "").trim();
       const price = toNum(r.Price);
       return { state, price };
     })
-    .filter(x => x.state && x.state.toUpperCase() !== "AVERAGE" && isFinite(x.price));
+    .filter((x) => x.state && x.state.toUpperCase() !== "AVERAGE" && isFinite(x.price));
 
   // Min price per state
   const perStateMin = pellets.reduce((acc, r) => {
@@ -214,16 +163,20 @@ function renderTopCheapestPellet() {
   }, {});
 
   const top3 = Object.entries(perStateMin)
-    .sort((a,b) => a[1] - b[1])
+    .sort((a, b) => a[1] - b[1])
     .slice(0, 3);
 
   ul.innerHTML = top3.length
-    ? top3.map(([state, price], i) => `
-        <li>
-          <span class="rank">${i + 1}</span>
-          <span class="state">${state}</span>
-          <span class="price">₹${price.toLocaleString("en-IN")}/ton</span>
+    ? top3
+        .map(
+          ([state, price], i) => `
+        <li class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+          <div class="text-4xl font-bold text-[#66A5AD] mb-2">${i + 1}</div>
+          <div class="font-semibold text-lg">${state}</div>
+          <div class="text-gray-700">₹${price.toLocaleString("en-IN")}/ton</div>
         </li>
-      `).join("")
-    : `<li class="muted">Not enough data yet.</li>`;
+      `
+        )
+        .join("")
+    : `<li class="text-gray-500">Not enough data yet.</li>`;
 }
