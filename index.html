@@ -3,127 +3,159 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EverythingPallets — Home</title>
+  <title>Pelletrates — Home</title>
 
-  <!-- Charts -->
+  <!-- ✅ Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ✅ Chart.js for Graphs -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="font-sans text-gray-800 bg-gray-50">
 
-  <!-- HERO -->
-  <header class="site-header">
-    <div class="hero">
-      <img src="assets/Logo.png" alt="EverythingPallets Logo" class="hero-logo" />
-      <h1 class="hero-title">India’s Most Trusted Biomass Price Dashboard</h1>
-      <p class="hero-subtitle">Live rates, market insights, and quality assurance — all in one place.</p>
-      <div class="hero-cta">
-        <a class="btn primary" href="#live-prices">Check Today’s Prices</a>
-        <a class="btn ghost" href="market.html">Open Market Page</a>
+  <!-- ✅ HERO -->
+  <header class="relative bg-gradient-to-r from-[#1C3D5A]/90 to-[#66A5AD]/90 text-white">
+    <img src="assets/hero-bg.jpg" alt="Biomass Energy" class="absolute inset-0 w-full h-full object-cover opacity-40">
+    <div class="relative max-w-7xl mx-auto px-6 py-24 text-center">
+      <img src="assets/Logo.png" alt="Pelletrates Logo" class="mx-auto w-36 mb-6 drop-shadow-lg">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">India’s Most Trusted Biomass Price Dashboard</h1>
+      <p class="text-lg md:text-xl max-w-2xl mx-auto opacity-90">
+        Live rates, market insights, and verified supply — all in one place.
+      </p>
+      <div class="mt-8 flex justify-center gap-4">
+        <a href="#live-prices" class="px-6 py-3 rounded-lg bg-gradient-to-r from-[#66A5AD] to-[#1C3D5A] text-white font-bold shadow-lg hover:scale-105 transition">Check Today’s Prices</a>
+        <a href="contact.html" class="px-6 py-3 rounded-lg border border-white text-white font-bold hover:bg-white hover:text-[#1C3D5A] transition">Talk to Us</a>
+      </div>
+      <div class="mt-6 inline-flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full text-sm">
+        <span class="text-green-400 font-bold">✔</span>
+        Verified Peltra Rates • <span id="lastVerified">--</span>
       </div>
     </div>
   </header>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="market.html">Market Prices</a>
-      <a href="news.html">News</a>
-      <a href="contact.html">Contact</a>
+  <!-- ✅ NAV -->
+  <nav class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex justify-center gap-8 font-semibold">
+      <a href="index.html" class="text-[#1C3D5A] hover:text-[#66A5AD]">Home</a>
+      <a href="market.html" class="hover:text-[#66A5AD]">Market Prices</a>
+      <a href="news.html" class="hover:text-[#66A5AD]">News</a>
+      <a href="contact.html" class="hover:text-[#66A5AD]">Contact</a>
     </div>
   </nav>
 
-  <main>
-    <!-- TRUST / STATUS -->
-    <section class="section trust" id="trust">
-      <div class="trust-badge">
-        <span class="tick">✔</span>
-        <span><strong>Verified Peltra Rates</strong></span>
-        <span class="dot">•</span>
-        <span>Last verified: <strong id="lastVerified">--</strong></span>
-        <span class="dot">•</span>
-        <span id="verifiedTicker">Refreshing market signals…</span>
+  <!-- ✅ LIVE PRICES -->
+  <section id="live-prices" class="max-w-7xl mx-auto px-6 py-16">
+    <h2 class="text-3xl font-bold text-center mb-10">Live Market Price Update for India</h2>
+    <div class="grid md:grid-cols-2 gap-6 mb-10">
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition text-center">
+        <p class="text-gray-500 font-semibold">Pellet Price</p>
+        <p class="text-3xl font-extrabold mt-2">₹<span id="pelletPrice">--</span>/ton</p>
+        <canvas id="pelletChart" class="mt-4 w-full h-48"></canvas>
       </div>
-    </section>
-
-    <!-- LIVE PRICES + CHARTS -->
-    <section class="section" id="live-prices">
-      <h2>Live Market Price Update for India</h2>
-
-      <div class="price-section">
-        <div class="price-box">
-          <div class="price-label">Pellet Price</div>
-          <div class="price-value">
-            ₹<span id="pelletPrice">--</span><span class="unit">/ton</span>
-          </div>
-        </div>
-        <div class="price-box">
-          <div class="price-label">Briquette Price</div>
-          <div class="price-value">
-            ₹<span id="briquettePrice">--</span><span class="unit">/ton</span>
-          </div>
-        </div>
+      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition text-center">
+        <p class="text-gray-500 font-semibold">Briquette Price</p>
+        <p class="text-3xl font-extrabold mt-2">₹<span id="briquettePrice">--</span>/ton</p>
+        <canvas id="briquetteChart" class="mt-4 w-full h-48"></canvas>
       </div>
+    </div>
 
-      <div class="graph-container">
-        <div class="chart-box">
-          <h3>Pellet Price Trend</h3>
-          <canvas id="pelletChart"></canvas>
-        </div>
-        <div class="chart-box">
-          <h3>Briquette Price Trend</h3>
-          <canvas id="briquetteChart"></canvas>
-        </div>
+    <!-- ✅ Counters -->
+    <div class="grid md:grid-cols-3 gap-6 text-center">
+      <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-4xl font-extrabold text-[#1C3D5A]" data-counter="12500">0</p>
+        <p class="text-gray-600 font-semibold">Tons Tracked</p>
       </div>
-    </section>
-
-    <!-- INSIGHTS -->
-    <section class="section insights">
-      <div class="insights-card">
-        <h3>Top 3 Regions with the lowest rates (Pellets)</h3>
-        <ul id="cheapestList" class="cheapest-list"><!-- populated by JS --></ul>
-        <p class="note">Based on current submitted/aggregated rates. Subject to lane & loading conditions.</p>
+      <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-4xl font-extrabold text-[#66A5AD]" data-counter="50">0</p>
+        <p class="text-gray-600 font-semibold">Industries Served</p>
       </div>
+      <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-4xl font-extrabold text-[#D4AF37]" data-counter="100">0</p>
+        <p class="text-gray-600 font-semibold">Verified Submissions</p>
+      </div>
+    </div>
+  </section>
 
-      <div class="insights-card light">
-        <h3>Why Peltra?</h3>
-        <div class="why-grid">
-          <div class="why">
-            <div class="why-icon">📈</div>
-            <div class="why-title">Accurate Prices</div>
-            <div class="why-text">Live data, continuous refresh, and verified submissions.</div>
-          </div>
-          <div class="why">
-            <div class="why-icon">✅</div>
-            <div class="why-title">Quality First</div>
-            <div class="why-text">Focused on reliable biomass supply and stable quality.</div>
-          </div>
-          <div class="why">
-            <div class="why-icon">🌐</div>
-            <div class="why-title">Nationwide Network</div>
-            <div class="why-text">Efficient sourcing across clusters to keep costs in check.</div>
-          </div>
+  <!-- ✅ INSIGHTS -->
+  <section class="bg-white py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-10">Top 3 Cheapest Pellet Regions</h2>
+      <ul id="cheapestList" class="grid md:grid-cols-3 gap-6 text-center">
+        <!-- Populated by Home.js -->
+      </ul>
+    </div>
+  </section>
+
+  <!-- ✅ WHY US -->
+  <section class="py-16 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-10">Why Choose Pelletrates?</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="p-6 rounded-xl bg-white shadow hover:shadow-lg transition text-center">
+          <div class="text-5xl mb-4">📈</div>
+          <h3 class="font-bold text-lg">Accurate Prices</h3>
+          <p class="text-gray-600 mt-2">Live verified data from clusters, factories, and suppliers.</p>
+        </div>
+        <div class="p-6 rounded-xl bg-white shadow hover:shadow-lg transition text-center">
+          <div class="text-5xl mb-4">✅</div>
+          <h3 class="font-bold text-lg">Quality First</h3>
+          <p class="text-gray-600 mt-2">Consistent biofuel quality & reliable supply support.</p>
+        </div>
+        <div class="p-6 rounded-xl bg-white shadow hover:shadow-lg transition text-center">
+          <div class="text-5xl mb-4">🌐</div>
+          <h3 class="font-bold text-lg">Nationwide Network</h3>
+          <p class="text-gray-600 mt-2">Sourcing across India to keep costs competitive.</p>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 EverythingPallets. All rights reserved.</p>
+  <!-- ✅ TRUST / PARTNERS -->
+  <section class="bg-white py-16">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-6">Trusted by Leading Industries</h2>
+      <div class="flex flex-wrap justify-center gap-8 opacity-80">
+        <img src="assets/logo1.png" alt="Partner" class="h-12">
+        <img src="assets/logo2.png" alt="Partner" class="h-12">
+        <img src="assets/logo3.png" alt="Partner" class="h-12">
+        <img src="assets/logo4.png" alt="Partner" class="h-12">
+      </div>
+    </div>
+  </section>
+
+  <!-- ✅ CTA -->
+  <section class="bg-gradient-to-r from-[#1C3D5A] to-[#66A5AD] text-white py-16 text-center">
+    <h2 class="text-3xl font-extrabold mb-4">Get Verified Market Rates & Quality Supply</h2>
+    <p class="mb-6 opacity-90">Trusted by industries across India for accurate prices and dependable supply.</p>
+    <a href="contact.html" class="px-6 py-3 rounded-lg bg-white text-[#1C3D5A] font-bold shadow hover:scale-105 transition">Get a Quote</a>
+  </section>
+
+  <!-- ✅ FOOTER -->
+  <footer class="bg-[#1C3D5A] text-gray-200 py-6 text-center">
+    <p>&copy; 2025 Pelletrates by Peltra. Built for the biomass industry.</p>
   </footer>
 
-  <!-- MOBILE STICKY BAR -->
-  <div class="sticky-bar">
-    <a class="sticky-link" href="#live-prices">Today’s Prices</a>
-    <span class="dot">•</span>
-    <a class="sticky-link" href="market.html">Open Market Page</a>
-  </div>
-
-  <!-- Page JS -->
-  <script src="script.js" defer></script>
+  <!-- ✅ Page Scripts -->
+  <script src="js/Home.js" defer></script>
+  <script>
+    // Counter Animation
+    document.addEventListener("DOMContentLoaded", () => {
+      const counters = document.querySelectorAll("[data-counter]");
+      counters.forEach(el => {
+        const target = +el.dataset.counter;
+        let count = 0;
+        const step = Math.ceil(target / 100);
+        const interval = setInterval(() => {
+          count += step;
+          if (count >= target) {
+            el.textContent = target.toLocaleString("en-IN");
+            clearInterval(interval);
+          } else {
+            el.textContent = count.toLocaleString("en-IN");
+          }
+        }, 30);
+      });
+    });
+  </script>
 </body>
 </html>
