@@ -3,38 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pelletrates — Home</title>
+  <title>Pelletrates — Live Biomass Prices & Trusted Supply</title>
 
-  <!-- ✅ Tailwind CSS -->
+  <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- ✅ Chart.js for Graphs -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="font-sans text-gray-800 bg-gray-50">
+  <!-- Swiper (carousel) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-  <!-- ✅ HERO -->
-  <header class="relative bg-gradient-to-r from-[#1C3D5A]/90 to-[#66A5AD]/90 text-white">
-    <img src="assets/hero-bg.jpg" alt="Biomass Energy" class="absolute inset-0 w-full h-full object-cover opacity-40">
-    <div class="relative max-w-7xl mx-auto px-6 py-24 text-center">
-      <img src="assets/Logo.png" alt="Pelletrates Logo" class="mx-auto w-36 mb-6 drop-shadow-lg">
-      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">India’s Most Trusted Biomass Price Dashboard</h1>
-      <p class="text-lg md:text-xl max-w-2xl mx-auto opacity-90">
-        Live rates, market insights, and verified supply — all in one place.
+  <!-- Chart.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+  <!-- Favicons (optional) -->
+  <link rel="icon" href="assets/favicon.ico" />
+</head>
+<body class="font-sans text-gray-800 bg-gray-50 selection:bg-[#66A5AD]/20">
+
+  <!-- ================= HERO ================= -->
+  <header class="relative h-[76vh] min-h-[560px] w-full overflow-hidden">
+    <!-- Background video (optional). If you don’t have one, keep the image below. -->
+    <!-- <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline src="assets/hero.mp4"></video> -->
+
+    <!-- Background image fallback -->
+    <img src="assets/hero-bg.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" />
+
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-[#1C3D5A]/85 to-[#66A5AD]/80"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 max-w-7xl mx-auto h-full px-6 flex flex-col justify-center">
+      <img src="assets/Logo.png" alt="Pelletrates" class="w-36 md:w-40 drop-shadow-xl mb-6 opacity-0 will-animate" data-anim="fade-down">
+      <h1 class="text-white font-extrabold leading-tight text-4xl md:text-6xl opacity-0 will-animate" data-anim="fade-up">
+        India’s Most Trusted <span class="text-[#D4AF37]">Biomass Price</span> Dashboard
+      </h1>
+      <p class="text-white/95 max-w-2xl mt-4 text-lg md:text-xl opacity-0 will-animate" data-anim="fade-up" data-delay="0.1">
+        Live rates, verified submissions, and reliable supply support — built for factories and energy buyers.
       </p>
-      <div class="mt-8 flex justify-center gap-4">
-        <a href="#live-prices" class="px-6 py-3 rounded-lg bg-gradient-to-r from-[#66A5AD] to-[#1C3D5A] text-white font-bold shadow-lg hover:scale-105 transition">Check Today’s Prices</a>
-        <a href="contact.html" class="px-6 py-3 rounded-lg border border-white text-white font-bold hover:bg-white hover:text-[#1C3D5A] transition">Talk to Us</a>
+
+      <div class="mt-8 flex flex-wrap gap-3 opacity-0 will-animate" data-anim="fade-up" data-delay="0.2">
+        <a href="#live-prices" class="px-6 py-3 rounded-lg bg-gradient-to-r from-[#66A5AD] to-[#1C3D5A] text-white font-bold shadow-lg hover:scale-105 transition">
+          Check Today’s Prices
+        </a>
+        <a href="contact.html" class="px-6 py-3 rounded-lg border border-white/80 text-white font-bold hover:bg-white hover:text-[#1C3D5A] transition">
+          Talk to Us
+        </a>
       </div>
-      <div class="mt-6 inline-flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full text-sm">
-        <span class="text-green-400 font-bold">✔</span>
+
+      <div class="mt-6 inline-flex items-center gap-2 bg-white/15 backdrop-blur px-4 py-2 rounded-full text-sm text-white opacity-0 will-animate" data-anim="fade-up" data-delay="0.3">
+        <span class="text-green-300 font-bold">✔</span>
         Verified Peltra Rates • <span id="lastVerified">--</span>
       </div>
     </div>
+
+    <!-- Subtle bottom curve -->
+    <svg class="absolute -bottom-[1px] left-0 right-0 w-full h-12 text-gray-50" viewBox="0 0 1440 80" preserveAspectRatio="none" fill="currentColor">
+      <path d="M0,64L60,69.3C120,75,240,85,360,80C480,75,600,53,720,48C840,43,960,53,1080,58.7C1200,64,1320,64,1380,64L1440,64L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+    </svg>
   </header>
 
-  <!-- ✅ NAV -->
-  <nav class="bg-white shadow sticky top-0 z-50">
+  <!-- ================= STICKY NAV ================= -->
+  <nav class="bg-white/90 backdrop-blur sticky top-0 z-50 shadow">
     <div class="max-w-7xl mx-auto px-6 py-3 flex justify-center gap-8 font-semibold">
       <a href="index.html" class="text-[#1C3D5A] hover:text-[#66A5AD]">Home</a>
       <a href="market.html" class="hover:text-[#66A5AD]">Market Prices</a>
@@ -43,119 +76,253 @@
     </div>
   </nav>
 
-  <!-- ✅ LIVE PRICES -->
-  <section id="live-prices" class="max-w-7xl mx-auto px-6 py-16">
-    <h2 class="text-3xl font-bold text-center mb-10">Live Market Price Update for India</h2>
-    <div class="grid md:grid-cols-2 gap-6 mb-10">
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition text-center">
-        <p class="text-gray-500 font-semibold">Pellet Price</p>
-        <p class="text-3xl font-extrabold mt-2">₹<span id="pelletPrice">--</span>/ton</p>
-        <canvas id="pelletChart" class="mt-4 w-full h-48"></canvas>
+  <!-- ================= TICKER ================= -->
+  <section class="bg-[#0f2436] text-white">
+    <div class="max-w-7xl mx-auto px-6 py-2 overflow-hidden">
+      <div class="flex gap-8 whitespace-nowrap animate-[ticker_22s_linear_infinite]">
+        <p>🔥 Latest deal signal: Haryana pellets ₹7,550/t •</p>
+        <p>📉 Briquettes in Rajasthan softened by ₹120/t •</p>
+        <p>⚙️ Mustard husk supply steady •</p>
+        <p>🧪 Peltra Verified quality: Ash ≤ 2%, Moisture ≤ 8% •</p>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition text-center">
-        <p class="text-gray-500 font-semibold">Briquette Price</p>
-        <p class="text-3xl font-extrabold mt-2">₹<span id="briquettePrice">--</span>/ton</p>
-        <canvas id="briquetteChart" class="mt-4 w-full h-48"></canvas>
+    </div>
+    <style>
+      @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    </style>
+  </section>
+
+  <!-- ================= LIVE PRICES ================= -->
+  <section id="live-prices" class="max-w-7xl mx-auto px-6 py-16">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-[#1C3D5A]">Live Market Price Update for India</h2>
+      <p class="text-gray-600 mt-2">Auto-refreshed insights to guide your procurement decisions.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+      <!-- Pellet card -->
+      <div class="bg-white p-6 rounded-2xl shadow will-animate group" data-anim="rise">
+        <div class="flex items-center justify-between">
+          <p class="text-gray-500 font-semibold">Pellet Price</p>
+          <span class="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">8mm</span>
+        </div>
+        <p class="text-4xl font-extrabold mt-2 tracking-tight text-[#1C3D5A]">₹<span id="pelletPrice">--</span><span class="text-xl text-gray-500">/ton</span></p>
+        <canvas id="pelletChart" class="mt-4 w-full h-44"></canvas>
+      </div>
+
+      <!-- Briquette card -->
+      <div class="bg-white p-6 rounded-2xl shadow will-animate group" data-anim="rise" data-delay="0.1">
+        <div class="flex items-center justify-between">
+          <p class="text-gray-500 font-semibold">Briquette Price</p>
+          <span class="text-xs px-2 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-200">90mm</span>
+        </div>
+        <p class="text-4xl font-extrabold mt-2 tracking-tight text-[#1C3D5A]">₹<span id="briquettePrice">--</span><span class="text-xl text-gray-500">/ton</span></p>
+        <canvas id="briquetteChart" class="mt-4 w-full h-44"></canvas>
       </div>
     </div>
 
-    <!-- ✅ Counters -->
-    <div class="grid md:grid-cols-3 gap-6 text-center">
-      <div class="bg-white p-6 rounded-xl shadow">
-        <p class="text-4xl font-extrabold text-[#1C3D5A]" data-counter="12500">0</p>
-        <p class="text-gray-600 font-semibold">Tons Tracked</p>
+    <!-- Counters -->
+    <div class="grid sm:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-2xl shadow text-center will-animate" data-anim="rise">
+        <div class="text-4xl font-extrabold text-[#1C3D5A]" data-counter="12500">0</div>
+        <div class="text-gray-600 font-semibold mt-1">Tons Tracked</div>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow">
-        <p class="text-4xl font-extrabold text-[#66A5AD]" data-counter="50">0</p>
-        <p class="text-gray-600 font-semibold">Industries Served</p>
+      <div class="bg-white p-6 rounded-2xl shadow text-center will-animate" data-anim="rise" data-delay="0.1">
+        <div class="text-4xl font-extrabold text-[#66A5AD]" data-counter="50">0</div>
+        <div class="text-gray-600 font-semibold mt-1">Industries Served</div>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow">
-        <p class="text-4xl font-extrabold text-[#D4AF37]" data-counter="100">0</p>
-        <p class="text-gray-600 font-semibold">Verified Submissions</p>
+      <div class="bg-white p-6 rounded-2xl shadow text-center will-animate" data-anim="rise" data-delay="0.2">
+        <div class="text-4xl font-extrabold text-[#D4AF37]" data-counter="100">0</div>
+        <div class="text-gray-600 font-semibold mt-1">Verified Submissions</div>
       </div>
     </div>
   </section>
 
-  <!-- ✅ INSIGHTS -->
-  <section class="bg-white py-16">
+  <!-- ================= INSIGHTS ================= -->
+  <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-10">Top 3 Cheapest Pellet Regions</h2>
-      <ul id="cheapestList" class="grid md:grid-cols-3 gap-6 text-center">
-        <!-- Populated by Home.js -->
+      <h2 class="text-3xl md:text-4xl font-extrabold text-center text-[#1C3D5A]">Top 3 Cheapest Pellet Regions</h2>
+      <p class="text-gray-600 text-center mt-2">Based on current submissions & live checks.</p>
+
+      <ul id="cheapestList" class="grid md:grid-cols-3 gap-6 mt-8">
+        <!-- Populated by js/Home.js -->
       </ul>
     </div>
   </section>
 
-  <!-- ✅ WHY US -->
+  <!-- ================= WHY US ================= -->
   <section class="py-16 bg-gray-100">
     <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-10">Why Choose Pelletrates?</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="p-6 rounded-xl bg-white shadow hover:shadow-lg transition text-center">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-center text-[#1C3D5A]">Why Pelletrates</h2>
+
+      <div class="grid md:grid-cols-3 gap-6 mt-10">
+        <div class="p-6 rounded-2xl bg-white shadow hover:shadow-lg transition will-animate" data-anim="rise">
           <div class="text-5xl mb-4">📈</div>
           <h3 class="font-bold text-lg">Accurate Prices</h3>
-          <p class="text-gray-600 mt-2">Live verified data from clusters, factories, and suppliers.</p>
+          <p class="text-gray-600 mt-2">Live, verified data from clusters and factories to keep you ahead.</p>
         </div>
-        <div class="p-6 rounded-xl bg-white shadow hover:shadow-lg transition text-center">
+        <div class="p-6 rounded-2xl bg-white shadow hover:shadow-lg transition will-animate" data-anim="rise" data-delay="0.1">
           <div class="text-5xl mb-4">✅</div>
           <h3 class="font-bold text-lg">Quality First</h3>
-          <p class="text-gray-600 mt-2">Consistent biofuel quality & reliable supply support.</p>
+          <p class="text-gray-600 mt-2">Peltra Verified supply with consistent specs & support.</p>
         </div>
-        <div class="p-6 rounded-xl bg-white shadow hover:shadow-lg transition text-center">
+        <div class="p-6 rounded-2xl bg-white shadow hover:shadow-lg transition will-animate" data-anim="rise" data-delay="0.2">
           <div class="text-5xl mb-4">🌐</div>
           <h3 class="font-bold text-lg">Nationwide Network</h3>
-          <p class="text-gray-600 mt-2">Sourcing across India to keep costs competitive.</p>
+          <p class="text-gray-600 mt-2">Sourcing across states to keep costs competitive and predictable.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ✅ TRUST / PARTNERS -->
-  <section class="bg-white py-16">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-3xl font-bold mb-6">Trusted by Leading Industries</h2>
-      <div class="flex flex-wrap justify-center gap-8 opacity-80">
-        <img src="assets/logo1.png" alt="Partner" class="h-12">
-        <img src="assets/logo2.png" alt="Partner" class="h-12">
-        <img src="assets/logo3.png" alt="Partner" class="h-12">
-        <img src="assets/logo4.png" alt="Partner" class="h-12">
+  <!-- ================= PARTNERS (LOGO CAROUSEL) ================= -->
+  <section class="py-14 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-6">
+        <h3 class="text-2xl font-extrabold text-[#1C3D5A]">Trusted by Leading Industries</h3>
+        <p class="text-gray-600">Real logos can replace these placeholders anytime.</p>
+      </div>
+
+      <div class="swiper" id="partnersSwiper">
+        <div class="swiper-wrapper items-center">
+          <div class="swiper-slide flex justify-center"><img src="assets/logo1.png" class="h-12 opacity-70 hover:opacity-100 transition" alt=""></div>
+          <div class="swiper-slide flex justify-center"><img src="assets/logo2.png" class="h-12 opacity-70 hover:opacity-100 transition" alt=""></div>
+          <div class="swiper-slide flex justify-center"><img src="assets/logo3.png" class="h-12 opacity-70 hover:opacity-100 transition" alt=""></div>
+          <div class="swiper-slide flex justify-center"><img src="assets/logo4.png" class="h-12 opacity-70 hover:opacity-100 transition" alt=""></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ✅ CTA -->
+  <!-- ================= TESTIMONIALS ================= -->
+  <section class="py-16 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center">
+        <h3 class="text-3xl md:text-4xl font-extrabold text-[#1C3D5A]">What Customers Say</h3>
+        <p class="text-gray-600 mt-2">Short, credible quotes that reduce risk for new buyers.</p>
+      </div>
+
+      <div class="swiper mt-10" id="testimonialsSwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="bg-white p-8 rounded-2xl shadow">
+              <p class="text-xl italic">“Pelletrates saved us 12% on sourcing and stabilized our supply.”</p>
+              <div class="mt-4 text-sm text-gray-600">Procurement Head, Textile Plant (GJ)</div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="bg-white p-8 rounded-2xl shadow">
+              <p class="text-xl italic">“Rates are accurate and the quality checks are solid. Easy recommendation.”</p>
+              <div class="mt-4 text-sm text-gray-600">Operations Manager, Paper Mill (PB)</div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="bg-white p-8 rounded-2xl shadow">
+              <p class="text-xl italic">“We use their dashboard weekly to benchmark pellet buys.”</p>
+              <div class="mt-4 text-sm text-gray-600">Energy Lead, Pharma (MH)</div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-center gap-4">
+          <div class="swiper-button-prev !static !text-[#1C3D5A]"></div>
+          <div class="swiper-button-next !static !text-[#1C3D5A]"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
   <section class="bg-gradient-to-r from-[#1C3D5A] to-[#66A5AD] text-white py-16 text-center">
-    <h2 class="text-3xl font-extrabold mb-4">Get Verified Market Rates & Quality Supply</h2>
-    <p class="mb-6 opacity-90">Trusted by industries across India for accurate prices and dependable supply.</p>
+    <h2 class="text-3xl md:text-4xl font-extrabold">Get Verified Market Rates & Quality Supply</h2>
+    <p class="mb-6 opacity-90 mt-2">Talk to us for fair, accurate pricing and reliable deliveries.</p>
     <a href="contact.html" class="px-6 py-3 rounded-lg bg-white text-[#1C3D5A] font-bold shadow hover:scale-105 transition">Get a Quote</a>
   </section>
 
-  <!-- ✅ FOOTER -->
-  <footer class="bg-[#1C3D5A] text-gray-200 py-6 text-center">
-    <p>&copy; 2025 Pelletrates by Peltra. Built for the biomass industry.</p>
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-[#0f2436] text-gray-200 py-8">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+      <div>
+        <img src="assets/Logo.png" class="h-8 mb-3 opacity-90" alt="">
+        <p class="text-sm opacity-80">Pelletrates by Peltra — India’s best biomass price intelligence and sourcing support.</p>
+      </div>
+      <div>
+        <h4 class="font-bold mb-3">Quick Links</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a class="hover:underline" href="market.html">Market Prices</a></li>
+          <li><a class="hover:underline" href="news.html">News & Updates</a></li>
+          <li><a class="hover:underline" href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold mb-3">Contact</h4>
+        <ul class="space-y-2 text-sm">
+          <li>📞 <a href="tel:+919910033481" class="hover:underline">+91 99100 33481</a></li>
+          <li>💬 <a href="https://wa.me/919910033481" target="_blank" class="hover:underline">WhatsApp us</a></li>
+          <li>✉️ <a href="mailto:peltra@gmail.com" class="hover:underline">peltra@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center text-xs mt-6 opacity-60">© 2025 Pelletrates. All rights reserved.</div>
   </footer>
 
-  <!-- ✅ Page Scripts -->
-  <script src="js/Home.js" defer></script>
+  <!-- ================= SCRIPTS ================= -->
+  <!-- Your data/graphs logic (kept) -->
+  <script defer src="js/Home.js"></script>
+
+  <!-- Page effects & sliders -->
   <script>
-    // Counter Animation
-    document.addEventListener("DOMContentLoaded", () => {
-      const counters = document.querySelectorAll("[data-counter]");
-      counters.forEach(el => {
-        const target = +el.dataset.counter;
-        let count = 0;
-        const step = Math.ceil(target / 100);
-        const interval = setInterval(() => {
-          count += step;
-          if (count >= target) {
-            el.textContent = target.toLocaleString("en-IN");
-            clearInterval(interval);
-          } else {
-            el.textContent = count.toLocaleString("en-IN");
-          }
-        }, 30);
+  document.addEventListener("DOMContentLoaded", () => {
+    // ---- Swiper: partner logos (auto) ----
+    new Swiper("#partnersSwiper", {
+      slidesPerView: 2,
+      spaceBetween: 24,
+      loop: true,
+      autoplay: { delay: 0, disableOnInteraction: false },
+      speed: 3000,
+      breakpoints: { 640:{slidesPerView:3}, 1024:{slidesPerView:5} }
+    });
+
+    // ---- Swiper: testimonials ----
+    new Swiper("#testimonialsSwiper", {
+      slidesPerView: 1,
+      spaceBetween: 24,
+      loop: true,
+      navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+      autoplay: { delay: 4500, disableOnInteraction: false }
+    });
+
+    // ---- GSAP animations ----
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Simple fade/slide from hero
+    document.querySelectorAll(".will-animate").forEach((el) => {
+      const anim = el.dataset.anim || "fade-up";
+      const delay = Number(el.dataset.delay || 0);
+      const base = { opacity: 0, y: anim.includes("up") ? 24 : -24 };
+      gsap.fromTo(el, base, {
+        opacity: 1, y: 0, duration: 0.8, delay, ease: "power2.out",
+        scrollTrigger: { trigger: el, start: "top 85%" }
       });
     });
+
+    // Counter animation (fires once on view)
+    const counters = document.querySelectorAll("[data-counter]");
+    counters.forEach((el) => {
+      const target = +el.dataset.counter;
+      ScrollTrigger.create({
+        trigger: el, start: "top 90%", once: true,
+        onEnter: () => {
+          let val = 0; const step = Math.max(1, Math.ceil(target / 60));
+          const tick = () => {
+            val += step;
+            if (val >= target) { el.textContent = target.toLocaleString("en-IN"); return; }
+            el.textContent = val.toLocaleString("en-IN");
+            requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      });
+    });
+  });
   </script>
 </body>
 </html>
